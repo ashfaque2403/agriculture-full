@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<br>
+<div class="container">
+  <div class="row">
+      <div class="col-lg-12">
+          <div class="table-main table-responsive">
+              <table class="table">
+                {% include "messages.html" %}
+                  <thead>
+                      <tr>
+                          <th>Images</th>
+                          <th>Product Name</th>
+                          <th>Price</th>
+                          <th>Quantity</th>
+                          {% if request.user.is_farmer %}
+                          <th>Customer Name</th>
+                          <th>Address</th>
+                          {% endif %}
+                          <th>Status</th>
+                          
+                          {% if request.user.is_farmer %}
+                            
+                          <th>Status</th>
+                          
+                          {% endif %}
+                          
+                          
+                      </tr>
+                  </thead>
+                  <tbody>
+
+                    {% if not request.user.is_farmer %}
+                      {% for order_item in buyer_orders %}
+                      <tr>
+                          <td class="thumbnail-img">
+                              <a href="#">
+        <img class="img-fluid" src="{{order_item.product.image}}" alt="" />
+              </a>
+                          </td>
+                          <td class="name-pr">
+                              <a href="#">
+        {{order_item.product.name}}
+              </a>
+                          </td>
+                          <td class="price-pr">
+                              <p>$ {{order_item.price}}</p>
+                          </td>
+                          <td >
+                              <p  >{{ order_item.quantity }}</p>
+                          </td>
+
+
+                          <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">
+                            {% if order_item.status == 'processing' %}
+                                <button class="btn btn-light">Processing</button>
+                            {% elif order_item.status == 'packing' %}
+                                <button class="btn btn-warning">Packing</button>
+                            {% elif order_item.status == 'shipping' %}
+                                <button class="btn btn-primary">Shipping</button>
+                            {% elif order_item.status == 'delivered' %}
+                                <button class="btn btn-success">Delivered</button>
+                            {% endif %}
+                        </td>
+                        
+                      </tr>
+                      {% empty %}
+                          <tr>
+                              <td colspan="7">
+                              <h2 class="h5 text-black">No items</h2>
+                              </td>
+                          </tr>
+                      {% endfor %}
+                      
+
+
+                          {% else %}
+
+
+
+
+
+
+                      {% for order_item in seller_orders %}
+                      <tr>
+                          <td class="thumbnail-img">
+                              <a href="#">
+        <img class="img-fluid" src="{{order_item.product.image}}" alt="" />
+              </a>
+                          </td>
+                          <td class="name-pr">
+                              <a href="#">
+        {{order_item.product.name}}
+              </a>
+                          </td>
+                          <td class="price-pr">
+                              <p>$ {{order_item.price}}</p>
+                          </td>
+                          <td >
+                              <p  >{{ order_item.quantity }}</p>
+                          </td>
+                          <td >
+                            <p  >{{ order_item.order.user.first_name }} {{ order_item.order.user.last_name }}</p>
+                        </td> 
+                        <td >
+                            <p  >{{ order_item.order.address }} <br>- {{order_item.order.zipcode}}</p>
+                        </td>
+
+                          <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">
+                            {% if order_item.status == 'processing' %}
+                                <button class="btn btn-light">Processing</button>
+                            {% elif order_item.status == 'packing' %}
+                                <button class="btn btn-warning">Packing</button>
+                            {% elif order_item.status == 'shipping' %}
+                                <button class="btn btn-primary">Shipping</button>
+                            {% elif order_item.status == 'delivered' %}
+                                <button class="btn btn-success">Delivered</button>
+                            {% endif %}
+                        </td>
+                        {% if request.user.is_farmer %}
+                        <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">
+                            <form method="POST"  style="display: flex; align-items: center; width: 100%;"> <!-- Ensure this URL is correctly named -->
+                                {% csrf_token %}
+                                <input type="hidden" name="order_id" value="{{ order_item.id }}">
+                                <select name="action" class="selectpicker show-tick form-control" style=" margin-right: 10px;">
+                                    {% for status, status_display in order_item.STATUS_CHOICES %}
+                                        <option value="{{ status }}" {% if order_item.status == status %}selected{% endif %}>
+                                            {{ status_display }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                <button type="submit" class="btn btn-info  text-light" style="margin-left: 10px;">Done</button>
+                            </form>
+                        </td>
+                        
+                        {% endif %}
+                        
+                          
+                      </tr>
+                      {% empty %}
+                          <tr>
+                              <td colspan="7">
+                              <h2 class="h5 text-black">No items</h2>
+                              </td>
+                          </tr>
+                      {% endfor %}
+
+
+                      {% endif %}
+
+
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
+</div>
+
+{% endblock content %}

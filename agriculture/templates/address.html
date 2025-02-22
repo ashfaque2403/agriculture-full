@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="cart-box-main">
+    <div class="container">
+        <div class="checkout-address">
+            <h3>Billing address</h3>
+            <form method="POST">
+                {% csrf_token %}
+                {% include "mess.html" %} <!-- Include messages template -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="first_name">First name *</label>
+                        <input value="{{form_data.first_name}}" name="first_name" type="text" class="form-control" id="first_name" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="last_name">Last name *</label>
+                        <input value="{{form_data.last_name}}" name="last_name" type="text" class="form-control" id="last_name" required>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="email">Email Address *</label>
+                        <input value="{{form_data.email}}" type="email" class="form-control" name="email" id="email"  required>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="address">Address *</label>
+                        <input value="{{form_data.address}}" type="text" class="form-control" name="address" id="address" required>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="zip">Zip *</label>
+                        <input value="{{form_data.zipcode}}" type="text" class="form-control" name="zipcode" id="zip" required>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <button style="float:right;" type="submit" class="btn hvr-hover text-white">Update Address</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+</div>
+
+{% endblock content %}

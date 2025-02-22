@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+    <!-- Start All Title Box -->
+    <div class="all-title-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>Cart</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                        <li class="breadcrumb-item active">Cart</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End All Title Box -->
+    <div class="container mt-4">
+        {% include "messages.html" %}
+    </div>
+    <!-- Start Cart  -->
+    <div class="cart-box-main">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="table-main table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Images</th>
+                                    <th>Product Name</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th>Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cart_item in cart_items %}
+                                
+                                <tr>
+                                    <td class="thumbnail-img">
+                                        <a href="#">
+									<img class="img-fluid" src="{{cart_item.product.image}}" alt="" />
+								        </a>
+                                    </td>
+                                    <td class="name-pr">
+                                        <a href="#">
+									{{cart_item.product.name}}
+								        </a>
+                                    </td>
+                                    <td class="price-pr">
+                                        <p>$ {{cart_item.product.price}}</p>
+                                    </td>
+                                    <td >
+                                        <input type="number"  value="{{ cart_item.quantity }}" min="1" step="1"  onchange="updateQuantity({{ cart_item.id }}, this.value)">
+                                    </td>
+                                    
+                                    <td class="total-pr">
+                                        <p id="total-price-{{ cart_item.id }}">${{ cart_item.total_price }}</p>
+                                    </td>
+                                    
+                                    <td class="remove-pr">
+                                        <a href="{% url 'remove' cart_item.id %}">
+									<i class="fas fa-times"></i>
+								        </a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="7">
+                                        <h2 class="h5 text-black">No items</h2>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+           
+                
+            <div class="row my-5">
+                {% comment %} <div class="col-lg-6 col-sm-6">
+                    <div class="coupon-box">
+                        <div class="input-group input-group-sm">
+                            <input class="form-control" placeholder="Enter your coupon code" aria-label="Coupon code" type="text">
+                            <div class="input-group-append">
+                                <button class="btn btn-theme" type="button">Apply Coupon</button>
+                            </div>
+                        </div>
+                    </div>
+                </div> {% endcomment %}
+                <script>
+
+                    function refreshPage() {
+                        location.reload();
+                    }
+                    
+                </script>
+                <div class="col-lg-12 col-sm-12">
+                    <div class="update-box ">
+                        <input value="Update Cart" type="submit" onclick="refreshPage()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row my-5">
+                <div class="col-lg-8 col-sm-12"></div>
+                <div class="col-lg-4 col-sm-12">
+                    <div class="order-box">
+                        <h3>Order summary</h3>
+                        <div class="d-flex">
+                            <h4>Sub Total</h4>
+                            <div class="ml-auto font-weight-bold"> $ {{total_amount}} </div>
+                        </div>
+                        <div class="d-flex">
+                            <h4>Discount</h4>
+                            <div class="ml-auto font-weight-bold"> $ {{total_discount}} </div>
+                        </div>
+                        <hr class="my-1">
+                        {% comment %} <div class="d-flex">
+                            <h4>Coupon Discount</h4>
+                            <div class="ml-auto font-weight-bold"> $ 10 </div>
+                        </div> {% endcomment %}
+                        
+                        <hr>
+                        <div class="d-flex gr-total">
+                            <h5>Grand Total</h5>
+                            <div class="ml-auto h5"> $ {{discounted_amount}} </div>
+                        </div>
+                        <hr> </div>
+                </div>
+                <div class="col-12 d-flex shopping-box"><a href="{% url "checkout" %}" class="ml-auto btn hvr-hover">Checkout</a> </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- End Cart -->
+
+
+    <!--Javascript Code-->
+    <script>
+        function updateQuantity(itemId, newQuantity) {
+            const csrfToken = '{{ csrf_token }}'; // Ensure you're passing the CSRF token correctly if needed
+            fetch(`/update-cart-item/${itemId}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrfToken
+                },
+                body: 'quantity=' + newQuantity
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Update the total price in the DOM
+                    document.getElementById('total-price-' + itemId).innerHTML = '$' + data.total_price.toFixed(2);
+                    alert('Quantity updated to ' + newQuantity);
+                    // Optionally update other parts of the page, like subtotal, taxes, total, etc.
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+        
+{% endblock content %}

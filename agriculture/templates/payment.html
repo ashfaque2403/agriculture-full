@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,700,900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        body {
+            text-align: center;
+            padding: 40px 0;
+            background: #EBF0F5;
+        }
+        h1 {
+            color: #88B04B;
+            font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+            font-weight: 900;
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #404F5E;
+            font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+            font-size:20px;
+            margin: 0;
+        }
+        i {
+            color: #9ABC66;
+            font-size: 100px;
+            line-height: 200px;
+            margin-left:-15px;
+        }
+        .card {
+            background: white;
+            padding: 60px;
+            border-radius: 2rem;
+            box-shadow: 0 2px 3px #C8D0D8;
+            display: inline-block;
+            margin: 0 auto;
+        }
+        a.light {
+            text-decoration: none; /* Corrected property name */
+            color: black; /* Text color */
+            background-color: #f8f8f8; /* Light grey background */
+            padding: 10px 20px; /* Top and bottom padding of 10px, left and right padding of 20px */
+            border-radius: 5px; /* Rounded corners */
+            border: 1px solid #ddd; /* Light grey border */
+            transition: all 0.3s ease; /* Smooth transition for hover effects */
+        }
+    
+        a.light:hover {
+            background-color: #e2e2e2; /* Slightly darker grey background on hover */
+            color: #333; /* Darker text color on hover */
+            text-decoration: none; /* Ensures that no underline appears on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
+            <i class="checkmark">✓</i>
+        </div>
+        <h1>Success</h1>
+        <p>We received your purchase request;<br/>Thank You!</p>
+        <br>
+        <a href="{% url "index" %}" class="light">Back To Home </a>
+        
+
+    </div>
+    <script>
+        function launchConfetti() {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+        window.onload = launchConfetti;
+    </script>
+</body>
+</html>

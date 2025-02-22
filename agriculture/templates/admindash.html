@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+  <style>
+    .service-item {
+      text-align: center;
+      padding: 20px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      position: relative; /* Needed for stretched-link */
+    }
+    .service-item:hover {
+      background-color: #b0b435; /* Light yellow background on hover */
+      transform: scale(1.05); /* Slightly scale up on hover */
+    }
+    
+    .service-icon {
+      font-size: 40px;
+      color: #17a2b8;
+      margin-bottom: 15px;
+    }
+    p {
+      color: #222222;
+    }
+    .service-title {
+      font-weight: bold;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+  </style>
+
+<div class="container-scroller">
+  <div class="row p-0 m-0 proBanner" id="proBanner">
+    <div class="col-md-12 p-0 m-0">
+      <div class="card-body card-body-padding d-flex align-items-center justify-content-between">
+        <div class="ps-lg-1">
+          <div class="d-flex align-items-center justify-content-between">
+            <p class="mb-0 font-weight-medium me-3 buy-now-text"></p>
+            {% comment %} <a href="https://www.bootstrapdash.com/product/kapella-admin-pro/?utm_source=organic&utm_medium=banner&utm_campaign=buynow_demo" target="_blank" class="btn me-2 buy-now-btn border-0">Get Pro</a> {% endcomment %}
+          </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between">
+          <a href="https://www.bootstrapdash.com/product/kapella-admin-pro/">
+            <i class="fas fa-home me-3 text-white"></i>
+          </a>
+          <button id="bannerClose" class="btn border-0 p-0">
+            <i class="fas fa-times text-white me-0"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- partial:partials/_horizontal-navbar.html -->
+  <div class="horizontal-menu">
+    <div class="container-fluid">
+      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-between">
+        <ul class="navbar-nav navbar-nav-left"></ul>
+      </div>
+    </div>
+  </div>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-12 text-center mb-5">
+        <h2 class="font-weight-bold">Our Services</h2>
+        <p>Consectetur adipiscing elit nullam nunc justo sagittis suscipit ultrices.</p>
+      </div>
+      <div class="col-md-4 mb-4">
+        <a href="admin_home" class="service-item stretched-link">
+          <div class="service-icon">
+            <i class="fas fa-home"></i>
+          </div>
+          <h5 class="service-title">Home</h5>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit nullam nunc justo sagittis suscipit ultrices.</p>
+        </a>
+      </div>
+      <div class="col-md-4 mb-4">
+        <a href="vw_farmer" class="service-item stretched-link">
+          <div class="service-icon">
+            <i class="fas fa-user-friends"></i>
+          </div>
+          <h5 class="service-title">View Farmer</h5>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit nullam nunc justo sagittis suscipit ultrices.</p>
+        </a>
+      </div>
+      <div class="col-md-4 mb-4">
+        <a href="vwconsumer" class="service-item stretched-link">
+          <div class="service-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h5 class="service-title">View Consumer</h5>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit nullam nunc justo sagittis suscipit ultrices.</p>
+        </a>
+      </div>
+      <div class="col-md-4 mb-4">
+        <a href="vwproduct" class="service-item stretched-link">
+          <div class="service-icon">
+            <i class="fas fa-box-open"></i>
+          </div>
+          <h5 class="service-title">View Product</h5>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit nullam nunc justo sagittis suscipit ultrices.</p>
+        </a>
+      </div>
+      <div class="col-md-4 mb-4">
+        <a href="vworder" class="service-item stretched-link">
+          <div class="service-icon">
+            <i class="fas fa-shopping-cart"></i>
+          </div>
+          <h5 class="service-title">View Order</h5>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit nullam nunc justo sagittis suscipit ultrices.</p>
+        </a>
+      </div>
+      <div class="col-md-4 mb-4">
+        <a href="pages/tables/basic-table.html" class="service-item stretched-link">
+          <div class="service-icon">
+            <i class="fas fa-sign-out-alt"></i>
+          </div>
+          <h5 class="service-title">Logout</h5>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit nullam nunc justo sagittis suscipit ultrices.</p>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<br>
+<br>
+{% endblock content %}

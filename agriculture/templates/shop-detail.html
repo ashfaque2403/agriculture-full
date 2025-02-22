@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+{% include "messages.html" %}
+    <!-- Start All Title Box -->
+    <div class="all-title-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>Username: {{request.user.username}}</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                        <li class="breadcrumb-item active">Shop Detail </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End All Title Box -->
+
+    <!-- Start Shop Detail  -->
+    <div class="shop-detail-box-main">
+        <div class="container">
+            
+            <div class="row new-account-login">
+                <div class="col-sm-6 col-lg-6 mb-3">
+                    <div class="title-left">
+                        <h3>Add Category</h3>
+                    </div>
+                    <h5><a data-toggle="collapse" href="#formLogin" role="button" aria-expanded="false">Click here to Add Category</a></h5>
+                    <form method="post" class="mt-3 collapse review-form-box" id="formLogin">
+                        {% csrf_token %}
+                        
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="InputEmail" class="mb-0">Category Name</label>
+                                <input name="category_name" type="text" class="form-control" id="InputEmail" placeholder="Enter Category Name"> </div>
+                            
+                        </div>
+                        <button type="submit" class="btn hvr-hover">Add</button>
+                    </form>
+                </div>
+                <div class="col-sm-6 col-lg-6 mb-3">
+                    <div class="title-left">
+                        <h3>Add Product</h3>
+                    </div>
+                    <h5><a data-toggle="collapse" href="#formRegister" role="button" aria-expanded="false">Click here to Add Product</a></h5>
+                    <form method="post"  class="mt-3 collapse review-form-box" id="formRegister" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="InputName" class="mb-0">Name</label>
+                                <input name="product_name" type="text" class="form-control" id="InputName" placeholder="Enter Name"> 
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="InputDescription" class="mb-0">Description</label>
+                                <input name="description" type="text" class="form-control" id="InputDescription" placeholder="Enter Description">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="InputPrice" class="mb-0">Price</label>
+                                <input name="price" type="text" class="form-control" id="InputPrice" placeholder="Enter Price">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="InputCategory" class="mb-0">Category</label>
+                                <input name="category" type="text" class="form-control" id="InputCategory" placeholder="Enter Category">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="InputDiscount" class="mb-0">Discount</label>
+                                <input name="discount" type="text" class="form-control" id="InputDiscount" placeholder="Enter Discount">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="InputImage" class="mb-0">Image</label>
+                                <input name="image" type="file" class="form-control" id="InputImage">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn hvr-hover">Add Product</button>
+                    </form>
+                    
+                </div>
+            </div>
+			
+			
+
+            <div class="row my-5">
+                <div class="col-lg-12">
+                    <div class="title-all text-center">
+                        <h1>Farmer Products</h1>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet lacus enim.</p>
+                    </div>
+                    <div class="featured-products-box owl-carousel owl-theme">
+                        {% for item in product %}
+                        <div class="item">
+                            
+                            <div class="products-single fix">
+                                <div class="box-img-hover">
+                                    <img src="{{ item.image.url }}" class="img-fluid" alt="Image" style="width:300px; height:200px; object-fit: cover;">
+
+                                    <div class="mask-icon">
+                                        <ul>
+                                            <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
+                                            <li><a href="#" data-toggle="tooltip" data-placement="right" title="Compare"><i class="fas fa-sync-alt"></i></a></li>
+                                            <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
+                                        </ul>
+                                        {% if request.user.is_farmer %}
+                                            {% else %}
+                                            <a class="cart" >Add to Cart</a>
+                                        
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="why-text">
+                                    <h4>{{item.name}}</h4>
+                                    <h5> ${{item.price}}</h5>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- End Cart -->
+    {% endblock content %}

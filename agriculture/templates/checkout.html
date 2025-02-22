@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Start All Title Box -->
+    <div class="all-title-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>Checkout</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                        <li class="breadcrumb-item active">Checkout</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End All Title Box -->
+<!-- Start Cart -->
+<div class="cart-box-main">
+    <div class="container">
+        <form method="post" action="{% url 'start_order' %}">               
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-lg-12 mb-3">
+                    <div class="shipping-method-box">
+                        <h3>Shipping Method</h3>
+                        <div class="mb-4">
+                            <!-- Standard Delivery Option -->
+                            <div class="custom-control custom-radio">
+                                <input id="shippingOption1" name="shipping-option" class="custom-control-input" value="Standard Delivery" type="radio" checked="checked" onchange="updateShippingCost('free')">
+                                <label class="custom-control-label" for="shippingOption1">Standard Delivery</label>
+                                <span class="float-right font-weight-bold">FREE</span>
+                                <div class="ml-4 mb-2 small">(3-7 business days)</div>
+                            </div>
+    
+                            <!-- Speed Delivery Option -->
+                            <div class="custom-control custom-radio">
+                                <input id="shippingOption2" name="shipping-option" class="custom-control-input" value="Speed Delivery" type="radio" onchange="updateShippingCost('{{ speed_delivery }}')">
+                                <label class="custom-control-label" for="shippingOption2">Speed Delivery</label>
+                                <span class="float-right font-weight-bold">${{ speed_delivery }}</span>
+                                <div class="ml-4 mb-2 small">(2-4 business days)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-box">
+                        <h3>Shopping cart</h3>
+                        <div class="rounded p-2 bg-light">
+                            {% for cart_item in cart_items %}
+                            <div class="media mb-2 border-bottom">
+                                <div class="media-body">
+                                    <a href="detail.html">{{ cart_item.product.name }}</a>
+                                    <div class="small text-muted">Price: ${{ cart_item.product.price }} | Qty: {{ cart_item.quantity }} | Subtotal: ${{ cart_item.total_price }}</div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <h3>Your order</h3>
+                        <div class="d-flex justify-content-between">
+                            <span>Sub Total</span>
+                            <strong>$ {{ total_amount }}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Discount</span>
+                            <strong>$ {{ total_discount }}</strong>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <span>Shipping Cost</span>
+                            <strong id="shippingCost">Free</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Grand Total</span>
+                            <strong id="totalAmount">${{ discounted_amount }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="checkout-address">
+                        <h3>Billing address <a class="btn btn-warning" href="{% url "address" %}">Add/Change Address</a></h3>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="first_name">First name *</label>
+                                <input value="{{form_data.first_name}}" name="first_name" type="text" class="form-control" id="first_name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="last_name">Last name *</label>
+                                <input value="{{form_data.last_name}}" name="last_name" type="text" class="form-control" id="last_name" required>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="email">Email Address *</label>
+                                <input value="{{form_data.email}}" type="email" class="form-control" name="email" id="email"  required>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="address">Address *</label>
+                                <input value="{{form_data.address}}" type="text" class="form-control" name="address" id="address" required>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="zip">Zip *</label>
+                                <input value="{{form_data.zipcode}}" type="text" class="form-control" name="zipcode" id="zip" required>
+                            </div>
+                        </div>
+                        <div class="title"> <span>Payment</span> </div>
+                            <div class="d-block my-3">
+                                <div class="custom-control custom-radio">
+                                    <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
+                                    <label class="custom-control-label" for="credit">Credit card</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required>
+                                    <label class="custom-control-label" for="debit">Debit card</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required>
+                                    <label class="custom-control-label" for="paypal">Paypal</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="cc-name">Name on card</label>
+                                    <input type="text" class="form-control" id="cc-name" placeholder="" required> <small class="text-muted">Full name as displayed on card</small>
+                                    <div class="invalid-feedback"> Name on card is required </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="cc-number">Credit card number</label>
+                                    <input type="text" class="form-control" id="cc-number" placeholder="" required>
+                                    <div class="invalid-feedback"> Credit card number is required </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 mb-3">
+                                    <label for="cc-expiration">Expiration</label>
+                                    <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
+                                    <div class="invalid-feedback"> Expiration date required </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="cc-expiration">CVV</label>
+                                    <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
+                                    <div class="invalid-feedback"> Security code required </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="payment-icon">
+                                        <ul>
+                                            <li><img class="img-fluid" src="{% static 'images/payment-icon/1.png' %}" alt=""></li>
+                                            <li><img class="img-fluid" src="{% static 'images/payment-icon/2.png' %}" alt=""></li>
+                                            <li><img class="img-fluid" src="{% static 'images/payment-icon/3.png' %}" alt=""></li>
+                                            <li><img class="img-fluid" src="{% static 'images/payment-icon/5.png' %}" alt=""></li>
+                                            <li><img class="img-fluid" src="{% static 'images/payment-icon/7.png' %}" alt=""></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        <button type="submit" class="btn hvr-hover text-white">Payment</button>
+                    </div>
+                </div>
+            </div>
+        </form> 
+    </div> 
+</div>
+<!-- End Cart -->
+
+<script>
+    function updateShippingCost(cost) {
+        const shippingCostDisplay = document.getElementById('shippingCost');
+        const totalAmountDisplay = document.getElementById('totalAmount');
+        const baseAmount = parseFloat('{{ discounted_amount }}');
+        let finalAmount = cost === 'free' ? baseAmount : baseAmount + parseFloat(cost);
+        totalAmountDisplay.textContent = `$${finalAmount.toFixed(2)}`;
+        shippingCostDisplay.textContent = cost === 'free' ? 'Free' : `$${cost}`;
+    }
+</script>
+
+    {% endblock content %}

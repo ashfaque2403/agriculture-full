@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="mt-4 ">
+  <div class="container" >
+      <div class="row">
+          <div class="col-lg-12">
+              {% comment %} <h2>Cart</h2> {% endcomment %}
+              <ul class="breadcrumb float-left">
+                  <li class="breadcrumb-item"><a href="./">Home</a></li>
+                  <li class="breadcrumb-item active">Order</li>
+              </ul>
+          </div>
+      </div>
+  </div>
+</div>
+
+<style>
+  .table-container {
+    margin: auto 50px ;
+    width: 90%;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 18px;
+    text-align: left;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  }
+
+  th, td {
+    padding: 12px 15px;
+  }
+
+  th {
+    background-color: #b0b435;
+    color: #ffffff;
+
+  }
+
+  tr {
+    border-bottom: 1px solid #dddddd;
+  }
+
+  tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+  }
+
+  tr:last-of-type {
+    border-bottom: 2px solid #b0b435;
+  }
+
+  tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  @media (max-width: 600px) {
+    table {
+      border: 0;
+    }
+
+    table caption {
+      font-size: 1.3em;
+    }
+
+    table thead {
+      display: none;
+    }
+
+    table tr {
+      display: block;
+      margin-bottom: .625em;
+    }
+
+    table td {
+      display: block;
+      text-align: right;
+      font-size: .8em;
+      border-bottom: 1px solid #dddddd;
+    }
+
+    table td::before {
+      content: attr(data-label);
+      float: left;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    table td:last-child {
+      border-bottom: 0;
+    }
+  }
+</style>
+
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Image</th>
+        <th>Order User Name</th>
+        <th>Product </th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for odd in order  %}
+      <tr>
+        <td>{{forloop.counter}}</td>
+        <td class="thumbnail-img">
+          <img style="border-radius:6rem; object-fit:cover; width:60px; height:60px" class="img-fluid" src="{{odd.product.image}}" >
+        </td>
+        <td>{{odd.order.user.first_name  }} {{odd.order.user.last_name  }}  </td>
+        <td>{{odd.product.name}}</td>
+        <td>${{odd.price}} </td>
+        <td>{{odd.quantity}} </td>
+        <td>{{odd.status}} </td>
+        
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock content %}

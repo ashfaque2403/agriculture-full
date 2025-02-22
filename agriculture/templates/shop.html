@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Start All Title Box -->
+    <div class="all-title-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>Username: {{request.user.username}}</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Shop</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End All Title Box -->
+
+    <!-- Start Shop Page  -->
+    <div class="shop-box-inner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 shop-content-right">
+                    <div class="right-product-box">
+                        <div class="product-item-filter row">
+                            <div class="col-sm-8 text-center text-sm-left">
+                                <div class="toolbar-sorter-right" style="display: flex; align-items: center;">
+                                    <form action="" method="GET" style="display: flex; align-items: center; width: 100%;">
+                                        <select name="sorted" id="basic" class="selectpicker show-tick form-control" data-placeholder="$ USD" style="flex-grow: 1;">
+                                            <option data-display="Select">Sort by</option>
+                                            <option value="2">High Price → Low Price</option>
+                                            <option value="3">Low Price → High Price</option>
+                                        </select>
+                                        <button type="submit" class="btn hvr-hover text-light" style="margin-left: 10px;">Apply</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="product-categorie-box">
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade show active" id="grid-view">
+                                    <div class="row">
+                                        {% for item in product %}
+                                        
+                                        <div class="col-lg-4 col-md-6">
+                                            
+                                            <div class="products-single fix">
+                                                <div class="type-lb">
+                                                    {% if item.stock_quantity > 0 %}
+                                                    <p class="sale">In Stock</p>
+                                                    {% else %}
+                                                    <p class="sale bg-danger">Out of Stock</p>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="box-img-hover">
+                                                    <img src="{{item.image}}" class="img-fluid" alt="Image" style="width:300px; height:200px; object-fit: cover;">
+                                                    <div class="mask-icon">
+                                                        <ul>
+                                                            <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
+                                                            <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
+                                                        </ul>
+                                                        <a class="cart" href="{% url 'add' item.id %}">Add to Cart</a>
+                                                    </div>
+                                                </div>
+                                                <div class="why-text">
+                                                    <h4>{{item.name}}</h4>
+                                                    <h5>${{item.price}}</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 sidebar-shop-left">
+                    <div class="product-categori">
+                        <div class="search-product">
+                            <form >
+                                <input class="form-control" placeholder="Search here..." type="search" name="search">
+                                <button type="submit"> <i class="fa fa-search"></i> </button>
+                            </form>
+                        </div>
+                        <div class="filter-sidebar-left">
+                            <div class="title-left">
+                                <h3>Categories</h3>
+                            </div>
+                            <div class="list-group list-group-collapse list-group-sm list-group-tree" id="list-group-men" data-children=".sub-men" style="display: flex; flex-direction: column; width: 100%;">
+                                <form action="" method="GET" style="display: flex; align-items: center; width: 100%;">
+                                    <select name="category" id="category-select" class="selectpicker show-tick form-control" data-placeholder="Choose a category" style="flex-grow: 1;">
+                                        {% comment %} <option data-display="Select">Choose category</option> {% endcomment %}
+                                        {% for category_objs in category_obj  %}
+                                        <option value="{{ category_objs.name }}" {% if category_objs.name in categories %}selected{% endif %}>
+                                            {{ category_objs.name }}
+                                        </option>
+                                        {% endfor %}
+                                        
+                                    </select>
+                                    <button type="submit" class="btn hvr-hover text-light" style="margin-left: 10px;">Filter</button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- End Shop Page -->
+ 
+    {% endblock content %}

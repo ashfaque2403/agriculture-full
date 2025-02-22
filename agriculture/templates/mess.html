@@ -1,0 +1,9 @@
+
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags}}" role="alert">
+    {{ message}} -    <a href="{% url 'checkout' %}" class="btn btn-light">Proceed to Checkout</a>
+  </div>
+  {% endfor %}
+  {% endif %}
